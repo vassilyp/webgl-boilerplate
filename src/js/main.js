@@ -1,10 +1,12 @@
 import * as twgl from './twgl-full.module.js'
 
 function main(vs, fs) {
+  // This should remain more or less the same
   const gl = document.getElementById('c').getContext('webgl2')
   const programInfo = twgl.createProgramInfo(gl, [vs, fs])
   twgl.setDefaults({ attribPrefix: 'a_' })
 
+  // Init time. Create geometries etc.
   const arrays = {
     position: {
       numComponents: 2,
@@ -13,10 +15,14 @@ function main(vs, fs) {
   }
   const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 
+  // Render time.
   function render(time) {
+    // Resize based on display size. Keeps webgl in sync with css.
     twgl.resizeCanvasToDisplaySize(gl.canvas)
+    // Sync clip space to canvas dimensions
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
 
+    // Update uniforms
     const uniforms = {
       time: time * 0.001,
       resolution: [gl.canvas.width, gl.canvas.height],
@@ -45,6 +51,6 @@ const readShaderFiles = async () => {
 }
 
 // Read in the shader files, and use them to run the webgl code
-await readShaderFiles().then((res) => {
-  main(res[0], res[1])
+await readShaderFiles().then(([vert, frag]) => {
+  main(vert, frag)
 })
