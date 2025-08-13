@@ -1,18 +1,20 @@
 import * as twgl from './twgl-full.module.js'
 
 function main(vs, fs) {
-  // This should remain more or less the same
   const gl = document.getElementById('c').getContext('webgl2')
   const programInfo = twgl.createProgramInfo(gl, [vs, fs])
   twgl.setDefaults({ attribPrefix: 'a_' })
 
-  // Init time. Create geometries etc.
+  // -------- DO INIT TIME THINGS HERE --------------
   const arrays = {
     position: {
       numComponents: 2,
       data: [0, 0, 0, 0.5, 0.7, 0],
     },
   }
+
+  // -------------------------
+
   const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays)
 
   // Render time.
@@ -22,11 +24,15 @@ function main(vs, fs) {
     // Sync clip space to canvas dimensions
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
 
+    // -------- DO RENDER TIME THINGS HERE -----------
+
     // Update uniforms
     const uniforms = {
       time: time * 0.001,
       resolution: [gl.canvas.width, gl.canvas.height],
     }
+
+    // -----------------
 
     gl.useProgram(programInfo.program)
     twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo)
