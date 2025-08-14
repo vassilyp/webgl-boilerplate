@@ -28,8 +28,8 @@ function main(vs, fs) {
 
     // Update uniforms
     const uniforms = {
-      time: time * 0.001,
-      resolution: [gl.canvas.width, gl.canvas.height],
+      u_time: time * 0.001,
+      u_resolution: [gl.canvas.width, gl.canvas.height],
     }
 
     // -----------------
